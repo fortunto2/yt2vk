@@ -1,0 +1,6 @@
+__pycache__/
+*.swp
+
+config/config_local.py
+last_id
+
