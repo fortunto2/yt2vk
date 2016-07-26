@@ -4,3 +4,8 @@ try:
 except ImportError:
     pass
 
+import logging.config
+
+
+logging.config.dictConfig(LOGGING_CONFIG)
+

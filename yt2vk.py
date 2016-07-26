@@ -109,9 +109,6 @@ def _get_last_id():
     return last_id or None
         
 def main():
-    logging.basicConfig(level='ERROR')
-    logger.setLevel(level='DEBUG')
-
     last_id = _get_last_id()
     for yt_video in yt_new_videos(last_id):
         yt_video_id = yt_video['snippet']['resourceId']['videoId']
