@@ -6,6 +6,7 @@ Does not look further than 50 most recently uploaded videos (1 request limit).
 No DB. Stores last reposted video id in file `last_id`.
 No proper error handling/logging. 
 Does not guarantee repost to be atomic operation. 
+Youtube API costs: 6 units / run (2 requests).
 """
 from config import YT_API_KEY, YT_CHANNEL_ID, VK_API_KEY, VK_OWNER_ID, FILE_LAST_ID
 
@@ -120,5 +121,9 @@ def main():
         _set_last_id(yt_video_id)
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except RequestError as e:
+        logger.error(repr(e))
+        raise
     
