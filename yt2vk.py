@@ -1,5 +1,5 @@
 """
-Script to repost youtube videos on vk.com. TEST.
+Script to repost youtube videos on vk.com. DRAFT. Do not take it seriously.
 
 NOTES:
 Does not look further than 50 most recently uploaded videos (1 request limit).
@@ -94,7 +94,7 @@ def vk_post(yt_video):
     response = _vk_api_request('wall.post', params={
             'owner_id': VK_OWNER_ID,
             'from_group': 1,
-            'guid': video_id,
+            'guid': yt_video_id,
             #'message': message,
             'attachments': attachments,
         })
