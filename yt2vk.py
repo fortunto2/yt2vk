@@ -80,7 +80,8 @@ def vk_post(yt_video):
     yt_video_id = snippet['resourceId']['videoId']
     yt_video_url = 'https://youtube.com/watch?v=' + yt_video_id
     description = snippet['description']
-    message = title + '\n' + description + '\n' + yt_video_url
+    #message = title + '\n' + description + '\n' + yt_video_url
+    message = title.upper() + '\n\n' + description
 
     #[TODO] Check if video has been uploaded already.
     response = _vk_api_request('video.save', params={
@@ -95,7 +96,7 @@ def vk_post(yt_video):
             'owner_id': VK_OWNER_ID,
             'from_group': 1,
             'guid': yt_video_id,
-            #'message': message,
+            'message': message,
             'attachments': attachments,
         })
 
