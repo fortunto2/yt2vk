@@ -17,6 +17,7 @@ FILE_LOG = os.path.join(BASE_DIR, 'logs', 'log')
 # Logging
 LOGGING_CONFIG = {
     'version': 1,
+    'disable_existing_loggers': False,
     'formatters': {
         'standard': {
             'format': logging.BASIC_FORMAT,
