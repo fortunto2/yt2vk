@@ -63,10 +63,11 @@ def _vk_api_request(method_name, params=None):
     params['access_token'] = VK_API_KEY
     params['v'] = '5.53'
     url = vk_api_baseurl + method_name
-    response = requests.get(url, params).json()
-    if 'error' in response:
-        raise RequestError(url, response)
-    return response['response']
+    response = requests.get(url, params)
+    json_data = response.json()
+    if 'error' in json_data:
+        raise RequestError(url, json_data)
+    return json_data['response']
 
 def _vk_follow_upload_url(upload_url):
     response = requests.get(upload_url).json()
