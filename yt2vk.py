@@ -63,7 +63,7 @@ def _vk_api_request(method_name, params=None):
     params['access_token'] = VK_API_KEY
     params['v'] = '5.53'
     url = vk_api_baseurl + method_name
-    response = requests.get(url, params)
+    response = requests.post(url, data=params)
     json_data = response.json()
     if 'error' in json_data:
         raise RequestError(url, json_data)
