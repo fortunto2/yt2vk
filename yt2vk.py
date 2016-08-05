@@ -69,11 +69,20 @@ def _vk_api_request(method_name, params=None):
         raise RequestError(url, json_data)
     return json_data['response']
 
-def _vk_follow_upload_url(upload_url):
+def _vk_follow_upload_url(upload_url, yt_video_id):
+    # Do not upload again if video is already uploaded. 
+    response = _vk_api_request('video.get', params={
+            'owner_id': VK_OWNER_ID,
+            'count': 200,
+        })
+    for item in response['items']:
+        if yt_video_id in item['player']:
+            logging.warn('Video "%s" was already uploaded. New video upload is cancelled.', yt_video_id)
+            return item['id']
+
     response = requests.get(upload_url).json()
     if 'error_code' in response:
         raise RequestError(upload_url, response)
-    return response['response']
 
 def vk_post(yt_video):
     snippet = yt_video['snippet']
@@ -84,15 +93,19 @@ def vk_post(yt_video):
     #message = title + '\n' + description + '\n' + yt_video_url
     message = title.upper() + '\n\n' + description
 
-    #[TODO] Check if video has been uploaded already.
     response = _vk_api_request('video.save', params={
             'link': yt_video_url,
             #'wallpost': 1,
             'group_id': VK_OWNER_ID.lstrip('-'),
         })
-    _vk_follow_upload_url(response['upload_url'])
+    old_vid = _vk_follow_upload_url(response['upload_url'], yt_video_id)
+    if old_vid is not None:
+        # Video has been uploaded already. Use it.
+        vk_video_id = old_vid  
+    else:
+        vk_video_id = response['video_id']
     
-    attachments = 'video{}_{}'.format(response['owner_id'], response['video_id'])
+    attachments = 'video{}_{}'.format(response['owner_id'], vk_video_id)
     response = _vk_api_request('wall.post', params={
             'owner_id': VK_OWNER_ID,
             'from_group': 1,
