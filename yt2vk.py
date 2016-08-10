@@ -92,6 +92,7 @@ def vk_post(yt_video):
     description = snippet['description']
     #message = title + '\n' + description + '\n' + yt_video_url
     message = title.upper() + '\n\n' + description
+    message += '\n\n(дополнительный комментарий - в видео)'
 
     response = _vk_api_request('video.save', params={
             'link': yt_video_url,
