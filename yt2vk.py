@@ -129,7 +129,14 @@ def _get_last_id():
         
 def main():
     last_id = _get_last_id()
-    for yt_video in yt_new_videos(last_id):
+
+    # Temporary hotfix.
+    # TODO: remove.
+    videos = yt_new_videos(last_id)
+    if len(videos) > 20:
+        raise Exception("BS")
+
+    for yt_video in videos:
         yt_video_id = yt_video['snippet']['resourceId']['videoId']
         logger.info("Processing: last_id = %s, vid = %s, title = %s",
                 last_id, yt_video_id, yt_video['snippet']['title'])
