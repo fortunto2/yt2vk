@@ -89,10 +89,12 @@ def vk_post(yt_video):
     title = snippet['title']
     yt_video_id = snippet['resourceId']['videoId']
     yt_video_url = 'https://youtube.com/watch?v=' + yt_video_id
-    description = snippet['description']
+    description = snippet.get('description', '').strip()
     #message = title + '\n' + description + '\n' + yt_video_url
-    message = title.upper() + '\n\n' + description
-    message += '\n\n(дополнительный комментарий - в видео)'
+    message = title.upper()
+    if descripton:
+        message += '\n\n' + description
+        message += '\n\n(дополнительный комментарий - в видео)'
 
     response = _vk_api_request('video.save', params={
             'link': yt_video_url,
