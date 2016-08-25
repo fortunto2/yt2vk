@@ -92,7 +92,7 @@ def vk_post(yt_video):
     description = snippet.get('description', '').strip()
     #message = title + '\n' + description + '\n' + yt_video_url
     message = title.upper()
-    if descripton:
+    if description:
         message += '\n\n' + description
         message += '\n\n(дополнительный комментарий - в видео)'
 
