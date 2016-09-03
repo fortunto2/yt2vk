@@ -7,6 +7,9 @@ No DB. Stores last reposted video id in file `last_id`.
 No proper error handling/logging. 
 Does not guarantee repost to be atomic operation. 
 Youtube API costs: 6 units / run (2 requests).
+
+# "VK limits: 500 likes, 150 reposts" 19may2016 (per day?)
+http://zismo.biz/topic/696427-sobot-luchshij-bot-dlia-sotc-setej/page-3
 """
 from config import YT_API_KEY, YT_CHANNEL_ID, VK_API_KEY, VK_OWNER_ID, FILE_LAST_ID
 
@@ -55,6 +58,10 @@ def yt_new_videos(last_id=None):
         lambda item: item['snippet']['resourceId']['videoId'] != last_id,
         response['items']))
     videos.reverse()
+
+    # NOTE: bug is possible when new video is uploaded, processed and couple of
+    # minutes later removed (for reuploading). last_id will point to non-existing video and this method will return all videos.
+    # TODO: fix. If last_id not in response['items'], then ...?
     return videos
 
 def _vk_api_request(method_name, params=None):
@@ -151,4 +158,5 @@ if __name__ == '__main__':
     except RequestError as e:
         logger.error(repr(e))
         raise
-    
+# [TODO] preview image of  #42 is changed...
+# [BUG] sometimes videos are not in uploaded order? (maybe if order of 'public' time?)
